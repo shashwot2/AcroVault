@@ -2,11 +2,26 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <link href="style.css" rel="stylesheet" />
+    <link href="./src/style.css" rel="stylesheet" />
   </head>
   <body>
-    <h1 id="myHeading">My content</h1>
-    <h2> hmm</h2>
-    <script src="script.js"></script>
+    <div class="container">
+    <header>
+      <img src="./icons/icon.png" />
+      <div id="settings">
+        <div>
+          <button>Import </button>
+          <button> Gear button</button>
+        </div>
+        <button> Toggle Sidebar </button>
+      </div>
+    </header>
+    <form>
+      <!-- <label> Search Acronyms: </label> -->
+      <input placeholder="Search acronyms...">  </input>
+    </form>
+    </div>
+    <script src="fuse.min.js"></script>
+    <script src="start.js"></script>
   </body>
 </html>
