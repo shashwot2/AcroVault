@@ -1,9 +1,9 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "AcroVault",
   "description": "AcroVault is a tool for looking up Acronyms ",
   "version": "0.0.1",
-  "permissions": ["storage"],
+  "permissions": ["storage", "sidePanel"],
   "icons": {
       "16":"icons/icon16.png",
       "32":"icons/icon32.png",
@@ -23,7 +23,7 @@
       "js": ["content_script.js"]
     }
   ],
-  "browser_action": {
+  "action": {
     "default_icon": {
       "16":"icons/icon16.png",
       "32":"icons/icon32.png",
