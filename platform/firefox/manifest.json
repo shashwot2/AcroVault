@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+  "name": "AcroVault",
+  "description": "AcroVault is a tool for looking up Acronyms",
+  "version": "0.0.1",
+  "permissions": ["storage", "<all_urls>"],
+  "icons": {
+    "16": "./icons/AcroVault.svg",
+    "32": "./icons/AcroVault.svg",
+    "48": "./icons/AcroVault.svg",
+    "128": "./icons/AcroVault.svg"
+  },
+  "sidebar_action": {
+    "default_panel": "../../index.html",
+    "default_title": "AcroVault"
+  },
+  "browser_action": {
+    "default_icon": {
+      "16": "./icons/AcroVault.svg",
+      "32": "./icons/AcroVault.svg",
+      "48": "./icons/AcroVault.svg",
+      "128": "./icons/AcroVault.svg"
+    },
+    "default_popup": "./index.html",
+    "default_title": "AcroVault"
+  }
+}

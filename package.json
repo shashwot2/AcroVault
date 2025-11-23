@@ -1,0 +1,12 @@
+{
+  "name": "acrovault",
+  "version": "0.0.1",
+  "description": "AcroVault is a tool for looking up Acronyms",
+  "scripts": {
+    "build:chrome": "cp -r src/* platform/chrome/src && cp -r icons platform/chrome/ && cp index.html platform/chrome/",
+    "build:firefox": "cp -r src/* platform/firefox/src && cp -r icons platform/firefox/ && cp index.html platform/firefox/",
+    "build": "npm run build:chrome && npm run build:firefox"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}
