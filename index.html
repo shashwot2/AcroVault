@@ -2,6 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AcroVault</title>
     <link href="./src/style.css" rel="stylesheet" />
   </head>
   <body>
@@ -10,23 +12,27 @@
         <img
           id="taskbar-icon"
           src="./icons/AcroVault.svg"
-          alt="App icon"
+          alt="AcroVault"
         />
-        <img id="settings-icon" src="./icons/AcroVault.svg"> </img>
-        </header>
-        <form>
-          <!-- <label> Search Acronyms: </label> -->
-          <input placeholder="Search acronyms..." id="search" name="Acronym-search"/>
-        </form>
-        <div id="sidebar-button">
+        <img id="settings-icon" src="./icons/settings.svg" alt="Settings" />
+      </header>
+      <form id="search-form">
+        <input placeholder="Search acronyms..." id="search" name="Acronym-search" autocomplete="off" />
+      </form>
+      <button id="add-toggle" type="button">+ Add acronym</button>
+      <form id="add-form" hidden>
+        <input name="acronym" placeholder="Acronym (e.g. IRS)" required />
+        <input name="expansion" placeholder="Expansion" required />
+        <input name="description" placeholder="Description (optional)" />
+        <button type="submit">Save</button>
+        <small id="add-error"></small>
+      </form>
+      <div id="sidebar-button">
         <button>Toggle Sidebar</button>
-        </div>
-        <div class="search-container">
-          <div id="results">
-
-          </div>
-
-        </div>
+      </div>
+      <div class="search-container">
+        <div id="results"></div>
+      </div>
     </div>
     <script src="./src/search/fuse.min.js"></script>
     <script type="module" src="./src/start.js"></script>

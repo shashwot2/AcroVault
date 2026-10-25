@@ -1,4 +1,6 @@
 // Fuse is already loaded globally so no need here
+import { getAcronyms } from "../storage.js";
+
 const search = {
   // My data structure will look like:
   //  acronyms = [{
@@ -7,41 +9,59 @@ const search = {
   //      description: "Federal Agency that controls Tax"
 
   async render(query = "") {
-    const { getAcronyms } = await import("../storage.js");
+    const results = document.querySelector("#results");
     const acronyms = await getAcronyms();
-    
+
     if (acronyms.length === 0) {
-      document.querySelector("#results").innerHTML = "<div>No acronyms found. Add some first!</div>";
+      results.replaceChildren(message("No acronyms found. Add some first!"));
       return;
     }
-    
-    const fuse = new Fuse(acronyms, options);
-    
-    if (!query.trim()) {
-      // Show all acronyms if no query
-      const allResults = acronyms.map(item => 
-        `<div class="result-item">
-          <strong>${item.acronym}</strong> - ${item.expansion}
-          ${item.description ? `<br><small>${item.description}</small>` : ''}
-        </div>`
-      );
-      document.querySelector("#results").innerHTML = allResults.join("");
+
+    const items = query.trim()
+      ? new Fuse(acronyms, options).search(query).map((result) => result.item)
+      : acronyms;
+
+    if (items.length === 0) {
+      results.replaceChildren(message("No matching acronyms found."));
     } else {
-      const searchResults = fuse.search(query)
-        .map((result) => 
-          `<div class="result-item">
-            <strong>${result.item.acronym}</strong> - ${result.item.expansion}
-            ${result.item.description ? `<br><small>${result.item.description}</small>` : ''}
-          </div>`
-        );
-      
-      if (searchResults.length === 0) {
-        document.querySelector("#results").innerHTML = "<div>No matching acronyms found.</div>";
-      } else {
-        document.querySelector("#results").innerHTML = searchResults.join("");
-      }
+      results.replaceChildren(...items.map(renderItem));
     }
   },
+};
+
+// Built with textContent so stored text is never parsed as HTML
+const renderItem = (item) => {
+  const div = document.createElement("div");
+  div.className = "result-item";
+
+  const title = document.createElement("div");
+  const strong = document.createElement("strong");
+  strong.textContent = item.acronym;
+  title.append(strong, ` - ${item.expansion}`);
+  div.append(title);
+
+  if (item.description) {
+    const small = document.createElement("small");
+    small.textContent = item.description;
+    div.append(small);
+  }
+
+  const remove = document.createElement("button");
+  remove.className = "delete-button";
+  remove.textContent = "×";
+  remove.title = `Delete ${item.acronym}`;
+  remove.dataset.acronym = item.acronym;
+  remove.dataset.expansion = item.expansion;
+  div.append(remove);
+
+  return div;
+};
+
+const message = (text) => {
+  const div = document.createElement("div");
+  div.className = "message";
+  div.textContent = text;
+  return div;
 };
 
 const options = {
