@@ -14,7 +14,15 @@
           src="./icons/AcroVault.svg"
           alt="AcroVault"
         />
-        <img id="settings-icon" src="./icons/settings.svg" alt="Settings" />
+        <img
+          id="settings-icon"
+          src="./icons/settings.svg"
+          alt="Settings"
+          role="button"
+          tabindex="0"
+          aria-controls="options-sheet"
+          aria-expanded="false"
+        />
       </header>
       <form id="search-form">
         <input placeholder="Search acronyms..." id="search" name="Acronym-search" autocomplete="off" />
@@ -34,6 +42,21 @@
         <div id="results"></div>
       </div>
     </div>
+    <div id="options-backdrop"></div>
+    <section id="options-sheet" aria-label="Options" aria-hidden="true">
+      <div class="sheet-header">
+        <strong>Options</strong>
+        <button id="options-close" type="button" title="Close">×</button>
+      </div>
+      <p class="sheet-hint">
+        Import a .txt file with one acronym per line:<br />
+        <code>ACRONYM | Expansion | Description</code>
+      </p>
+      <button id="import-button" type="button">Import from .txt</button>
+      <input id="import-file" type="file" accept=".txt,text/plain" hidden />
+      <button id="export-button" type="button">Export to .txt</button>
+      <small id="import-status"></small>
+    </section>
     <script src="./src/search/fuse.min.js"></script>
     <script type="module" src="./src/start.js"></script>
   </body>

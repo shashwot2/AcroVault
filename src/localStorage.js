@@ -65,6 +65,25 @@ const removeAcronym = async (acronym, expansion) => {
     }
 }
 
+// Bulk add in a single storage write; returns how many entries were imported
+const importAcronyms = async (entries) => {
+    try {
+        let updatedAcronyms = await getAcronyms();
+        for (const { acronym, expansion, description = "" } of entries) {
+            updatedAcronyms = [
+                ...updatedAcronyms.filter(item => !isSame(item, acronym, expansion)),
+                { acronym: acronym.toUpperCase(), expansion, description }
+            ];
+        }
+
+        await browserAPI.storage.local.set({ 'acronyms': updatedAcronyms });
+        return entries.length;
+    } catch (error) {
+        console.error('Error importing acronyms:', error);
+        throw error;
+    }
+}
+
 // Only seed sample data on first run
 const seedAcronyms = async (defaults) => {
     const existingAcronyms = await getAcronyms();
@@ -73,4 +92,4 @@ const seedAcronyms = async (defaults) => {
     }
 }
 
-export { getAcronyms, addAcronym, removeAcronym, seedAcronyms }
+export { browserAPI, getAcronyms, addAcronym, removeAcronym, importAcronyms, seedAcronyms }

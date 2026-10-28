@@ -1,5 +1,5 @@
 // Fuse is already loaded globally so no need here
-import { getAcronyms } from "../storage.js";
+import { getAcronyms } from "../localStorage.js";
 
 const search = {
   // My data structure will look like:
