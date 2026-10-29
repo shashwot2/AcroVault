@@ -10,6 +10,20 @@ const isSame = (item, acronym, expansion) =>
     item.acronym === acronym.toUpperCase() &&
     item.expansion.toLowerCase() === expansion.toLowerCase();
 
+// Tags arrive as "a, b" from text or as an array; store them trimmed, lowercased and unique
+const parseTags = (tags = []) => {
+    const list = Array.isArray(tags) ? tags : tags.split(",");
+    return [...new Set(list.map(tag => tag.trim().toLowerCase()).filter(Boolean))];
+}
+
+const makeEntry = ({ acronym, expansion, description = "", collection = "", tags = [] }) => ({
+    acronym: acronym.toUpperCase(),
+    expansion,
+    description: description.trim(),
+    collection: collection.trim(),
+    tags: parseTags(tags)
+})
+
 const getAcronyms = async () => {
     try {
         const result = await browserAPI.storage.local.get(['acronyms']);
@@ -20,7 +34,7 @@ const getAcronyms = async () => {
     }
 }
 
-const addAcronym = async (acronym, expansion, description = "") => {
+const addAcronym = async (acronym, expansion, description = "", collection = "", tags = []) => {
     acronym = acronym?.trim();
     expansion = expansion?.trim();
     if (!acronym || !expansion) {
@@ -30,11 +44,7 @@ const addAcronym = async (acronym, expansion, description = "") => {
     try {
         const existingAcronyms = await getAcronyms();
 
-        const newAcronym = {
-            acronym: acronym.toUpperCase(),
-            expansion: expansion,
-            description: description.trim()
-        };
+        const newAcronym = makeEntry({ acronym, expansion, description, collection, tags });
 
         // Replace an existing entry instead of adding a duplicate
         const updatedAcronyms = [
@@ -69,10 +79,10 @@ const removeAcronym = async (acronym, expansion) => {
 const importAcronyms = async (entries) => {
     try {
         let updatedAcronyms = await getAcronyms();
-        for (const { acronym, expansion, description = "" } of entries) {
+        for (const entry of entries) {
             updatedAcronyms = [
-                ...updatedAcronyms.filter(item => !isSame(item, acronym, expansion)),
-                { acronym: acronym.toUpperCase(), expansion, description }
+                ...updatedAcronyms.filter(item => !isSame(item, entry.acronym, entry.expansion)),
+                makeEntry(entry)
             ];
         }
 

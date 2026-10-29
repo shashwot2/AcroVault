@@ -124,6 +124,50 @@ body.options-open #options-sheet {
   border-style:solid;
 }
 
+/* One accordion section per collection */
+.collection-group + .collection-group {
+  border-top: 1px solid #ccc;
+}
+.collection-group summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+  padding: 6px;
+  background: #f2f5fa;
+  font-weight: bold;
+  color: #1f4e8c;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+.collection-group summary::-webkit-details-marker {
+  display: none;
+}
+.collection-group summary::before {
+  content: "▸";
+  transition: transform 0.15s ease;
+}
+.collection-group[open] summary::before {
+  transform: rotate(90deg);
+}
+.collection-group summary span:first-child {
+  flex: 1;
+}
+.collection-group .count {
+  padding: 0 6px;
+  border-radius: 8px;
+  background: #dbe7f7;
+  font-size: 0.8em;
+  font-weight: normal;
+}
+.collection-group[open] summary {
+  border-bottom: 1px solid #e0e0e0;
+}
+.collection-group .result-item:last-child {
+  border-bottom: none;
+}
+
 .result-item {
   position: relative;
   padding: 6px 28px 6px 6px;
@@ -131,6 +175,21 @@ body.options-open #options-sheet {
 }
 .result-item small {
   display: block;
+  color: #555;
+}
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 3px;
+}
+.chip {
+  padding: 1px 6px;
+  border-radius: 8px;
+  font-size: 0.8em;
+}
+.chip.tag {
+  background: #eee;
   color: #555;
 }
 .delete-button {

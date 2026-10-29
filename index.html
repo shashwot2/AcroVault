@@ -32,12 +32,11 @@
         <input name="acronym" placeholder="Acronym (e.g. IRS)" required />
         <input name="expansion" placeholder="Expansion" required />
         <input name="description" placeholder="Description (optional)" />
+        <input name="collection" placeholder="Collection (optional)" />
+        <input name="tags" placeholder="Tags, comma separated (optional)" />
         <button type="submit">Save</button>
         <small id="add-error"></small>
       </form>
-      <div id="sidebar-button">
-        <button>Toggle Sidebar</button>
-      </div>
       <div class="search-container">
         <div id="results"></div>
       </div>
@@ -50,7 +49,8 @@
       </div>
       <p class="sheet-hint">
         Import a .txt file with one acronym per line:<br />
-        <code>ACRONYM | Expansion | Description</code>
+        <code>ACRONYM | Expansion | Description | Collection | tag1, tag2</code><br />
+        Everything after Expansion is optional.
       </p>
       <button id="import-button" type="button">Import from .txt</button>
       <input id="import-file" type="file" accept=".txt,text/plain" hidden />

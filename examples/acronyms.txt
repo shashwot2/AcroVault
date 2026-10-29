@@ -1,11 +1,12 @@
 # AcroVault import file
-# One acronym per line: ACRONYM | Expansion | Description (optional)
+# One acronym per line: ACRONYM | Expansion | Description | Collection | tag1, tag2
+# Everything after Expansion is optional; leave a column empty to skip it.
 # Blank lines and lines starting with # are ignored.
 
-IRS | Internal Revenue Service | Federal Agency that controls Tax, They got Capone
-API | Application Programming Interface | Set of protocols for building software
+IRS | Internal Revenue Service | Federal Agency that controls Tax, They got Capone | Government | tax, federal
+API | Application Programming Interface | Set of protocols for building software | Tech | dev, web
 URL | Uniform Resource Locator | Web address
 PM | Project Manager | Person responsible for running a project
 PM | Post Meridiem | Time after noon
 FAQ | Frequently Asked Questions
-ETA | Estimated Time of Arrival
+ETA | Estimated Time of Arrival | | Travel | time

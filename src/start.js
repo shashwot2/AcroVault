@@ -20,9 +20,9 @@ document.querySelector('#add-toggle').addEventListener('click', () => {
 
 addForm.addEventListener('submit', async (e) => {
     e.preventDefault()
-    const { acronym, expansion, description } = addForm.elements
+    const { acronym, expansion, description, collection, tags } = addForm.elements
     try {
-        await addAcronym(acronym.value, expansion.value, description.value)
+        await addAcronym(acronym.value, expansion.value, description.value, collection.value, tags.value)
         addForm.reset()
         addError.textContent = ''
         acronym.focus()
@@ -114,7 +114,7 @@ document.querySelector('#export-button').addEventListener('click', async () => {
 })
 
 await seedAcronyms([
-    { acronym: "IRS", expansion: "Internal Revenue Service", description: "Federal Agency that controls Tax" },
+    { acronym: "IRS", expansion: "Internal Revenue Service", description: "Federal Agency that controls Tax", collection: "Government", tags: ["tax", "federal"] },
     { acronym: "API", expansion: "Application Programming Interface", description: "Set of protocols for building software" },
     { acronym: "URL", expansion: "Uniform Resource Locator", description: "Web address" },
 ])

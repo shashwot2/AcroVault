@@ -1,5 +1,6 @@
 // Plain-text import/export. One acronym per line:
-//   ACRONYM | Expansion | Description (optional)
+//   ACRONYM | Expansion | Description | Collection | tag1, tag2
+// Everything after Expansion is optional; leave a column empty to skip it.
 // Blank lines and lines starting with # are ignored.
 
 const SEPARATOR = "|";
@@ -18,8 +19,11 @@ const parseTxt = (text) => {
             errors.push(`Line ${index + 1}: expected "ACRONYM | Expansion"`);
             return;
         }
-        // Description may itself contain the separator, so rejoin the rest
-        entries.push({ acronym, expansion, description: rest.join(` ${SEPARATOR} `) });
+        // Collection and tags are always the last two columns when present, so any
+        // extra separators belong to the description
+        const [collection = "", tags = ""] = rest.length > 3 ? rest.slice(-2) : rest.slice(1);
+        const description = rest.length > 3 ? rest.slice(0, -2).join(` ${SEPARATOR} `) : rest[0] ?? "";
+        entries.push({ acronym, expansion, description, collection, tags });
     });
 
     return { entries, errors };
@@ -27,10 +31,13 @@ const parseTxt = (text) => {
 
 const toTxt = (acronyms) => [
     "# AcroVault export",
-    "# ACRONYM | Expansion | Description",
-    ...acronyms.map(({ acronym, expansion, description }) =>
-        [acronym, expansion, description].filter(Boolean).join(` ${SEPARATOR} `)
-    ),
+    "# ACRONYM | Expansion | Description | Collection | tag1, tag2",
+    ...acronyms.map(({ acronym, expansion, description = "", collection = "", tags = [] }) => {
+        // Columns are positional, so keep empty ones in the middle and only drop trailing ones
+        const columns = [acronym, expansion, description, collection, tags.join(", ")];
+        while (!columns.at(-1)) columns.pop();
+        return columns.join(` ${SEPARATOR} `);
+    }),
 ].join("\n") + "\n";
 
 const downloadTxt = (text, filename) => {
