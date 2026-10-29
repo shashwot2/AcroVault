@@ -3,7 +3,7 @@
   "name": "AcroVault",
   "description": "AcroVault is a tool for looking up Acronyms",
   "version": "0.0.1",
-  "permissions": ["storage", "sidePanel"],
+  "permissions": ["storage", "sidePanel", "tabs"],
   "icons": {
     "16": "./icons/AcroVault.svg",
     "32": "./icons/AcroVault.svg",

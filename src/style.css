@@ -36,6 +36,18 @@ h1 {
   height: 5%;
   padding: 5px;
 }
+#full-page-button {
+  margin-left: auto;
+  padding: 0 8px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.3em;
+  color: #555;
+}
+#full-page-button:hover {
+  color: #000;
+}
 #settings-icon {
   display: flex;
   width: clamp(3%,3.5%,4%);
@@ -99,7 +111,6 @@ body.options-open #options-sheet {
 #import-status.error {
   color: #c00;
 }
-
 #add-form {
   gap: 4px;
   padding: 6px 0;
@@ -154,11 +165,43 @@ body.options-open #options-sheet {
 .collection-group summary span:first-child {
   flex: 1;
 }
+.site-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0.9em;
+  opacity: 0.35;
+}
+.site-button.linked,
+.site-button:hover {
+  opacity: 1;
+}
+.site-form {
+  display: flex;
+  gap: 4px;
+  padding: 6px;
+  border-bottom: 1px solid #e0e0e0;
+  background: #fafafa;
+}
+.site-form input {
+  flex: 1;
+  min-width: 0;
+  padding: 4px;
+}
 .collection-group .count {
   padding: 0 6px;
   border-radius: 8px;
   background: #dbe7f7;
   font-size: 0.8em;
+  font-weight: normal;
+}
+.collection-group.on-page summary {
+  background: #e3efe0;
+  color: #2d6a1f;
+}
+.collection-group.on-page summary::after {
+  content: "● on this page";
+  font-size: 0.75em;
   font-weight: normal;
 }
 .collection-group[open] summary {

@@ -94,6 +94,25 @@ const importAcronyms = async (entries) => {
     }
 }
 
+// import/export. Shape: { [collectionName]: { url: "jira.example.com" } }
+const getCollectionSettings = async () => {
+    try {
+        const result = await browserAPI.storage.local.get(['collections']);
+        return result.collections || {};
+    } catch (error) {
+        console.error('Error getting collection settings:', error);
+        return {};
+    }
+}
+
+const setCollectionUrl = async (name, url) => {
+    const settings = await getCollectionSettings();
+    url = url.trim();
+    if (url) settings[name] = { ...settings[name], url };
+    else delete settings[name];
+    await browserAPI.storage.local.set({ 'collections': settings });
+}
+
 // Only seed sample data on first run
 const seedAcronyms = async (defaults) => {
     const existingAcronyms = await getAcronyms();
@@ -102,4 +121,4 @@ const seedAcronyms = async (defaults) => {
     }
 }
 
-export { browserAPI, getAcronyms, addAcronym, removeAcronym, importAcronyms, seedAcronyms }
+export { browserAPI, getAcronyms, addAcronym, removeAcronym, importAcronyms, seedAcronyms, getCollectionSettings, setCollectionUrl }

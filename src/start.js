@@ -76,13 +76,27 @@ document.addEventListener('keydown', (e) => {
 const isPopup = () =>
     browserAPI.extension?.getViews?.({ type: 'popup' }).includes(window) ?? false
 
+const openFullPage = async (query = '') => {
+    await browserAPI.tabs.create({ url: browserAPI.runtime.getURL(`index.html${query}`) })
+    if (isPopup()) window.close()
+}
+
 document.querySelector('#import-button').addEventListener('click', async () => {
     if (isPopup()) {
-        await browserAPI.tabs.create({ url: browserAPI.runtime.getURL('index.html?options') })
-        window.close()
+        await openFullPage('?options')
         return
     }
     importFile.click()
+})
+
+// getCurrent() returns a tab only when we're full page, not in the popup or side panel.
+// Linking sites to collections is full page only, too cramped for the small views.
+const fullPageButton = document.querySelector('#full-page-button')
+fullPageButton.addEventListener('click', () => openFullPage())
+browserAPI.tabs.getCurrent().then((tab) => {
+    fullPageButton.hidden = Boolean(tab)
+    search.canEditSites = Boolean(tab)
+    refresh()
 })
 
 if (new URLSearchParams(location.search).has('options')) {
@@ -118,4 +132,23 @@ await seedAcronyms([
     { acronym: "API", expansion: "Application Programming Interface", description: "Set of protocols for building software" },
     { acronym: "URL", expansion: "Uniform Resource Locator", description: "Web address" },
 ])
-refresh()
+
+// Read the active tab's URL so collections linked to it open first. In a full tab the
+// active tab is AcroVault itself, which never matches, so this is a no-op there.
+const updatePageUrl = async () => {
+    try {
+        const [tab] = await browserAPI.tabs.query({ active: true, lastFocusedWindow: true })
+        search.pageUrl = tab?.url ?? ''
+    } catch (error) {
+        search.pageUrl = ''
+    }
+    refresh()
+}
+
+// The side panel stays open while the user browses, so follow tab switches and navigations
+browserAPI.tabs.onActivated.addListener(updatePageUrl)
+browserAPI.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (changeInfo.url && tab.active) updatePageUrl()
+})
+
+await updatePageUrl()
